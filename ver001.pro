@@ -60,6 +60,23 @@ unix {
     LIBS += -lBulletSoftBody -lBulletDynamics -lBulletCollision -lLinearMath
 }
 
+win32 {
+    #Bullet is multi threaded, this must be multi threaded or something
+    QMAKE_CFLAGS_RELEASE += /MT
+    QMAKE_CXXFLAGS_RELEASE += /MT
+    QMAKE_CFLAGS_RELEASE -= -MD
+    QMAKE_CXXFLAGS_RELEASE -= -MD
+
+    INCLUDEPATH += C:\SDL2\i686-w64-mingw32\include\SDL2
+    INCLUDEPATH += C:\SDL2\i686-w64-mingw32\include
+    LIBS += -L"C:/SDL2/lib/x64/" -lSDL2 -lSDL2main -lSDL2_image -lSDL2_ttf -lSDL2_mixer
+
+    #Bullet things
+    INCLUDEPATH += D:/bullet3/src
+    LIBS += -LD:/bullet3/bin
+    LIBS += -lBulletDynamics_vs2010_x64_release -lBulletCollision_vs2010_x64_release -lLinearMath_vs2010_x64_release
+}
+
 NGLPATH = $$(NGLDIR)
 isEmpty(NGLPATH){ # note brace must be here
         message("including $HOME/NGL")

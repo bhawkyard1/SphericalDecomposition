@@ -38,9 +38,6 @@ int main()
                 btVector3(0, 0, 0)
                 );
 
-    /*btRigidBody::btRigidBodyConstructionInfo
-                    groundRigidBodyCI(0, groundMotionState, groundShape, btVector3(0, 0, 0));
-    */
     std::unique_ptr<btRigidBody> groundRigidBody ( new btRigidBody(groundRigidBodyCI) );
 
     dynamicsWorld->addRigidBody( groundRigidBody.get() );
