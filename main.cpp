@@ -1,13 +1,29 @@
+#define GLEW_STATIC
+
 #include <iostream>
 #include <memory>
+
+#include <SDL2/SDL.h>
 #include <btBulletDynamicsCommon.h>
 
-int main()
+#include "sim.hpp"
+#include "sim_time.hpp"
+
+int main(int _argc, char * _argv[])
 {
     std::cout << "Oh heck.\n";
 
+    sim sam();
+
+    bool active = true;
+
+    while(active)
+    {
+
+    }
+
     //Set broad phase algorithm
-    std::unique_ptr<btBroadphaseInterface> broadphase ( new btDbvtBroadphase() );
+    /*std::unique_ptr<btBroadphaseInterface> broadphase ( new btDbvtBroadphase() );
 
     //Some other physics settings I do not understand
     std::unique_ptr<btDefaultCollisionConfiguration> collisionConfiguration ( new btDefaultCollisionConfiguration() );
@@ -75,7 +91,7 @@ int main()
         std::cout << "Sphere Y is " << trans.getOrigin().getY() << '\n';
     }
 
-    std::cout << "Simulation complete.\n";
+    std::cout << "Simulation complete.\n";*/
 
     return 0;
 }
