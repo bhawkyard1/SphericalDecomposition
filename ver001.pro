@@ -18,6 +18,8 @@ SOURCES += $$PWD/main.cpp \
 
 HEADERS += $$PWD/include/*.hpp
 
+OTHER_FILES += ./shaders/*.glsl
+
 CONFIG += console
 
 !equals(PWD, $${OUT_PWD}){
@@ -71,7 +73,7 @@ win32 {
     INCLUDEPATH += C:/NGL/include/
     LIBS += -L"C:/NGL/lib/" -lNGL
     DEFINES += NO_DLL
-    QMAKE_CXXFLAGS += "_ITERATOR_DEBUG_LEVEL_0"
+    #QMAKE_CXXFLAGS += "_ITERATOR_DEBUG_LEVEL_0"
 
     #Bullet things
     INCLUDEPATH += D:/bullet3/src

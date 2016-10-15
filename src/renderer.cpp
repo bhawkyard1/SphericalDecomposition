@@ -1,4 +1,11 @@
+#include <iostream>
+
+#ifndef M_PI
+#define M_PI 3.14159
+#endif
+
 #include <ngl/NGLInit.h>
+#include <ngl/Util.h>
 
 #include "renderer.hpp"
 #include "util.hpp"
@@ -38,23 +45,84 @@ renderer::renderer()
     makeCurrent();
     SDL_GL_SetSwapInterval(1);
 
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
     ngl::NGLInit::instance();
 
     finalise();
+
+    m_pSettings.m_trans.reset();
+    m_pSettings.m_project = ngl::perspective( 60.0f, (float)m_w / (float)m_h, 0.01f, 10000.0f );
+    m_pSettings.m_view = ngl::lookAt( ngl::Vec3(0.0f, 1.0f, 0.0f), ngl::Vec3(0.0f, 0.0f, 0.0f), ngl::Vec3(0.0f, 1.0f, 0.0f) );
+
+    ngl::VAOPrimitives * prim = ngl::VAOPrimitives::instance();
+    prim->createSphere("sphere", 1.0f, 12.0f);
+
+    createShaderProgram( "blinn", "vMVPUVNV", "fBlinn" );
+    ngl::ShaderLib * slib = ngl::ShaderLib::instance();
+    slib->use( "blinn" );
+    ngl::Vec3 lightDir (0.4, -1.0, 0.0);
+    lightDir.normalize();
+    slib->setRegisteredUniform( "lightDir", lightDir );
+
+    std::cout << "Renderer constructed!\n";
 }
 
 renderer::~renderer()
 {
+    SDL_DestroyWindow( m_window );
 
+    SDL_Quit();
+}
+
+void renderer::createShaderProgram(const std::string _name, const std::string _vert, const std::string _frag)
+{
+    ngl::ShaderLib * slib = ngl::ShaderLib::instance();
+
+    slib->createShaderProgram(_name);
+    slib->attachShader(_vert, ngl::ShaderType::VERTEX);
+    slib->attachShader(_frag, ngl::ShaderType::FRAGMENT);
+
+    slib->loadShaderSource(_vert, "shaders/" + _vert + ".glsl");
+    slib->loadShaderSource(_frag, "shaders/" + _frag + ".glsl");
+
+    slib->compileShader(_vert);
+    slib->compileShader(_frag);
+
+    slib->attachShaderToProgram(_name, _vert);
+    slib->attachShaderToProgram(_name, _frag);
+
+    slib->linkProgramObject(_name);
+}
+
+void renderer::drawSphere(const ngl::Vec3 _pos, const float _radius, const ngl::Vec4 _colour)
+{
+    ngl::ShaderLib * slib = ngl::ShaderLib::instance();
+    slib->use( "blinn" );
+    slib->setRegisteredUniform( "colour", _colour );
+
+    m_pSettings.m_trans.setPosition( _pos );
+    m_pSettings.m_trans.setScale( _radius, _radius, _radius );
+
+    ngl::VAOPrimitives * prim = ngl::VAOPrimitives::instance();
+
+    loadMatricesToShader();
+
+    prim->draw("sphere");
 }
 
 void renderer::finalise()
 {
     //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     SDL_GL_SwapWindow(m_window);
+}
+
+void renderer::loadMatricesToShader()
+{
+    ngl::Mat4 MVP = m_pSettings.m_trans.getMatrix() * m_pSettings.m_view * m_pSettings.m_project;
+    ngl::ShaderLib * slib = ngl::ShaderLib::instance();
+    slib->setRegisteredUniform("MVP", MVP);
 }
 
 void renderer::SDLInit()

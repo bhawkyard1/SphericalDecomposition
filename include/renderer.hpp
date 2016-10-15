@@ -4,7 +4,16 @@
 #include <SDL2/SDL.h>
 #include <SDL_ttf.h>
 #include <ngl/NGLInit.h>
+#include <ngl/ShaderLib.h>
+#include <ngl/Transformation.h>
 #include <ngl/VAOPrimitives.h>
+
+struct projectionData
+{
+    ngl::Mat4 m_project;
+    ngl::Transformation m_trans;
+    ngl::Mat4 m_view;
+};
 
 class renderer
 {
@@ -16,7 +25,18 @@ public:
 
     ~renderer();
 
+    void clear() const {glClear( GL_COLOR_BUFFER_BIT );}
+
+    void createShaderProgram(const std::string _name, const std::string _vert, const std::string _frag);
+
+    void drawSphere(const ngl::Vec3 _pos, const float _radius, const ngl::Vec4 _colour);
+
     void finalise();
+
+    //----------------------------------------------------------------------------------------------------------------------
+    /// \brief Loads the MVP to the active shader
+    //----------------------------------------------------------------------------------------------------------------------
+    void loadMatricesToShader();
 
     //----------------------------------------------------------------------------------------------------------------------
     /// \brief Makes the member gl context and window active
@@ -38,6 +58,8 @@ private:
     /// \brief Window height
     //----------------------------------------------------------------------------------------------------------------------
     int m_h;
+
+    projectionData m_pSettings;
 
     //----------------------------------------------------------------------------------------------------------------------
     /// \brief The window the game will be drawn in

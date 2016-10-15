@@ -10,11 +10,24 @@ class collisionSphere
 public:
     collisionSphere(btVector3 _pos, const float _radius, const float _mass);
     collisionSphere(const collisionSphere &_rhs);
+    ~collisionSphere();
+
+    void deleteResources();
+
+    btRigidBody * getBodyPt() {return m_body;}
+    btSphereShape * getCollisionShapePt() {return m_collisionShape;}
+
+    btVector3 getPos() const {return m_trans.getOrigin();}
+
+    float getRadius() const {return m_radius;}
+
+    void update();
 private:
-    std::unique_ptr<btRigidBody> m_body;
-    std::unique_ptr<btCollisionShape> m_collisionShape;
+    btRigidBody * m_body;
+    btSphereShape * m_collisionShape;
     float m_mass;
     float m_radius;
+    btTransform m_trans;
 };
 
 #endif
