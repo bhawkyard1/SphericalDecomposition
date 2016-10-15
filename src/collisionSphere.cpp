@@ -8,39 +8,65 @@ collisionSphere::collisionSphere(btVector3 _pos, const float _radius, const floa
     m_radius = _radius;
     m_mass = _mass;
 
-    m_collisionShape = new btSphereShape( _radius );
-
-    btVector3 inertia(0, 0, 0);
-    m_collisionShape->calculateLocalInertia(_mass, inertia);
+    m_collisionShape = new btSphereShape( 1 );
 
     //Instantiate sphere
-    btDefaultMotionState motionState (
+    btDefaultMotionState * m_motionState =
+            new btDefaultMotionState(
                 btTransform(
                     btQuaternion( 0, 0, 0, 1 ),
-                    _pos
+                    btVector3(0,0,0)
                     )
                 );
 
+    btVector3 inertia(0, 0, 0);
+    m_collisionShape->calculateLocalInertia(1, inertia);
+
     btRigidBody::btRigidBodyConstructionInfo collisionSphereCI(
                 _mass,
-                &motionState,
+                m_motionState,
                 m_collisionShape,
                 inertia
                 );
 
     m_body = new btRigidBody( collisionSphereCI );
-    m_body->setMotionState( &motionState );
+    std::cout << "pre construction motionstate nullptr " << (m_body->getMotionState() == nullptr) << '\n';
+    m_body->setMotionState( m_motionState );
+    std::cout << "post construction motionstate nullptr " << (m_body->getMotionState() == nullptr) << '\n';
 
     std::cout << "collisionSphere constructed!\n";
 }
 
 collisionSphere::collisionSphere(const collisionSphere &_rhs)
 {
+    std::cout << "copy ctor call\n";
     m_radius = _rhs.m_radius;
     m_mass = _rhs.m_mass;
 
-    m_collisionShape = new btSphereShape( *_rhs.m_collisionShape );
-    m_body = new btRigidBody( *_rhs.m_body );
+    m_collisionShape = new btSphereShape( 1 );
+
+    //Instantiate sphere
+    btDefaultMotionState * m_motionState =
+            new btDefaultMotionState(
+                btTransform(
+                    btQuaternion( 0, 0, 0, 1 ),
+                    btVector3(0,0,0)
+                    )
+                );
+
+    btVector3 inertia(0, 0, 0);
+    m_collisionShape->calculateLocalInertia(1, inertia);
+
+    btRigidBody::btRigidBodyConstructionInfo collisionSphereCI(
+                _rhs.m_mass,
+                m_motionState,
+                m_collisionShape,
+                inertia
+                );
+
+    m_body = new btRigidBody( collisionSphereCI );
+    std::cout << "pre construction motionstate nullptr " << (m_body->getMotionState() == nullptr) << '\n';
+    m_body->setMotionState( m_motionState );
 }
 
 collisionSphere::~collisionSphere()

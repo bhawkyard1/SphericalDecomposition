@@ -20,12 +20,13 @@ int main(int _argc, char * _argv[])
     timer.setCur();
 
     std::cout << "Adding sphere pre\n";
-    //sam.addSphere(btVector3(0, 0, 0), 1.0f, 1.0f);
+    sam.addSphere(btVector3(0, 0, 0), 1.0f, 1.0f);
+    sam.update(0.1f);
     std::cout << "Adding sphere post\n";
 
     bool active = true;
 
-    while(active)
+    /*while(active)
     {
         while(timer.getAcc() > timer.getFrame())
         {
@@ -40,8 +41,7 @@ int main(int _argc, char * _argv[])
         sam.draw( timer.getAcc() / diff_clamped );
 
         timer.setCur();
-    }
-
+    }*/
 /*
     //Set broad phase algorithm
     btDbvtBroadphase broadphase;

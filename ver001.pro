@@ -81,4 +81,13 @@ win32 {
     LIBS += -lBulletDynamics_vs2010_x64_release -lBulletCollision_vs2010_x64_release -lLinearMath_vs2010_x64_release
 }
 
+NGLPATH = $$(NGLDIR)
+isEmpty(NGLPATH){ # note brace must be here
+        message("including $HOME/NGL")
+        include($(HOME)/NGL/UseNGL.pri)
+}
+else{ # note brace must be here
+        message("Using custom NGL location")
+        include($(NGLDIR)/UseNGL.pri)
+}
 

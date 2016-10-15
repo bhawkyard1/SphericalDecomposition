@@ -26,6 +26,7 @@ private:
     btRigidBody * m_body;
     btSphereShape * m_collisionShape;
     float m_mass;
+    btDefaultMotionState * m_motionState;
     float m_radius;
     btTransform m_trans;
 };

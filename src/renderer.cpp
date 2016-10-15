@@ -20,7 +20,7 @@ renderer::renderer()
     m_window = SDL_CreateWindow("Captain Fractal: Attack of the Space Communists",
                                 0, 0,
                                 m_w, m_h,
-                                SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_BORDERLESS /*| SDL_WINDOW_FULLSCREEN*/ );
+                                SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE/* | SDL_WINDOW_BORDERLESS /*| SDL_WINDOW_FULLSCREEN*/ );
 
     if(!m_window)
         errorExit("Unable to create window");
@@ -60,8 +60,11 @@ renderer::renderer()
     prim->createSphere("sphere", 1.0f, 12.0f);
 
     createShaderProgram( "blinn", "vMVPUVNV", "fBlinn" );
+
     ngl::ShaderLib * slib = ngl::ShaderLib::instance();
+    std::cout << "slib check " << (slib == nullptr) << '\n';
     slib->use( "blinn" );
+
     ngl::Vec3 lightDir (0.4, -1.0, 0.0);
     lightDir.normalize();
     slib->setRegisteredUniform( "lightDir", lightDir );
@@ -94,6 +97,8 @@ void renderer::createShaderProgram(const std::string _name, const std::string _v
     slib->attachShaderToProgram(_name, _frag);
 
     slib->linkProgramObject(_name);
+
+    std::cout << "shader created\n";
 }
 
 void renderer::drawSphere(const ngl::Vec3 _pos, const float _radius, const ngl::Vec4 _colour)
