@@ -78,7 +78,8 @@ collisionSphere::~collisionSphere()
 void collisionSphere::update()
 {
     std::cout << "yo " << (m_body->getMotionState() == nullptr) << '\n';
-    //m_body->getMotionState()->getWorldTransform( m_trans );
+    m_body->getMotionState()->getWorldTransform( m_trans );
+    std::cout << m_trans.getOrigin().getX() << ", " << m_trans.getOrigin().getY() << ", " << m_trans.getOrigin().getZ() << '\n';
 
     std::cout << "POSITION";
 

@@ -26,7 +26,7 @@ private:
 
     std::unique_ptr<btDiscreteDynamicsWorld> m_dynamicsWorld;
     std::vector<ngl::Obj> m_geometry;
-    //renderer m_renderer;
+    renderer m_renderer;
     btSequentialImpulseConstraintSolver * m_solver;
     slotMap<collisionSphere> m_spheres;
 };

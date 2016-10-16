@@ -4,3 +4,4 @@ Makefile.debug
 Makefile.release
 ver001.exe
 windep/
+*.pro.user

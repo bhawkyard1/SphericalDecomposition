@@ -21,13 +21,25 @@ int main(int _argc, char * _argv[])
 
     std::cout << "Adding sphere pre\n";
     sam.addSphere(btVector3(0, 0, 0), 1.0f, 1.0f);
-    sam.update(0.1f);
+    //sam.update(0.1f);
     std::cout << "Adding sphere post\n";
 
     bool active = true;
 
-    /*while(active)
+    while(active)
     {
+        SDL_Event event;
+        while( SDL_PollEvent(&event) )
+        {
+            //Quit event.
+            switch( event.type )
+            {
+            case SDL_QUIT:
+                active = false;
+                break;
+            }
+        }
+
         while(timer.getAcc() > timer.getFrame())
         {
             sam.update( timer.getDiff() );
@@ -41,7 +53,7 @@ int main(int _argc, char * _argv[])
         sam.draw( timer.getAcc() / diff_clamped );
 
         timer.setCur();
-    }*/
+    }
 /*
     //Set broad phase algorithm
     btDbvtBroadphase broadphase;

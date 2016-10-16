@@ -58,7 +58,7 @@ void sim::addSphere(const btVector3 _pos, const float _radius, const float _mass
     //m_dynamicsWorld.stepSimulation(1 / 60.f, 10);
 
 
-    btCollisionShape * fallShape = new btSphereShape(1);
+    /*btCollisionShape * fallShape = new btSphereShape(1);
     btDefaultMotionState* fallMotionState =
             new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 50, 0)));
     btScalar mass = 1;
@@ -66,7 +66,7 @@ void sim::addSphere(const btVector3 _pos, const float _radius, const float _mass
     fallShape->calculateLocalInertia(mass, fallInertia);
     btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI(mass, fallMotionState, fallShape, fallInertia);
     btRigidBody* fallRigidBody = new btRigidBody(fallRigidBodyCI);
-    m_dynamicsWorld->addRigidBody(fallRigidBody);
+    m_dynamicsWorld->addRigidBody(fallRigidBody);*/
 
     std::cout << "Sphere added!\n";
 }
@@ -75,11 +75,11 @@ void sim::draw(const float _dt)
 {
     //std::cout << "drawing\n";
 
-    //m_renderer.clear();
+    m_renderer.clear();
 
     for(auto &i : m_spheres.m_objects)
     {
-        //m_renderer.drawSphere( nv3(i.getPos()), i.getRadius(), ngl::Vec4(1.0, 1.0, 1.0, 1.0) );
+        m_renderer.drawSphere( nv3(i.getPos()), i.getRadius(), ngl::Vec4(1.0, 1.0, 1.0, 1.0) );
     }
 }
 

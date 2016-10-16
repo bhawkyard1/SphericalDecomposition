@@ -54,10 +54,10 @@ renderer::renderer()
 
     m_pSettings.m_trans.reset();
     m_pSettings.m_project = ngl::perspective( 60.0f, (float)m_w / (float)m_h, 0.01f, 10000.0f );
-    m_pSettings.m_view = ngl::lookAt( ngl::Vec3(0.0f, 1.0f, 0.0f), ngl::Vec3(0.0f, 0.0f, 0.0f), ngl::Vec3(0.0f, 1.0f, 0.0f) );
+    m_pSettings.m_view = ngl::lookAt( ngl::Vec3(2.0f, 5.0f, 0.0f), ngl::Vec3(0.0f, 0.0f, 0.0f), ngl::Vec3(0.0f, 1.0f, 0.0f) );
 
     ngl::VAOPrimitives * prim = ngl::VAOPrimitives::instance();
-    prim->createSphere("sphere", 1.0f, 12.0f);
+    prim->createSphere("sphere", 1.0f, 32.0f);
 
     createShaderProgram( "blinn", "vMVPUVNV", "fBlinn" );
 
@@ -103,12 +103,15 @@ void renderer::createShaderProgram(const std::string _name, const std::string _v
 
 void renderer::drawSphere(const ngl::Vec3 _pos, const float _radius, const ngl::Vec4 _colour)
 {
+    std::cout << "drawing sphere at " << _pos.m_x << ", " << _pos.m_y << ", " << _pos.m_z << '\n';
     ngl::ShaderLib * slib = ngl::ShaderLib::instance();
     slib->use( "blinn" );
     slib->setRegisteredUniform( "colour", _colour );
 
     m_pSettings.m_trans.setPosition( _pos );
+    m_pSettings.m_trans.setPosition( ngl::Vec3(0.0f, 0.0f, 0.0f) );
     m_pSettings.m_trans.setScale( _radius, _radius, _radius );
+    m_pSettings.m_trans.setScale( 1.0f, 1.0f, 1.0f );
 
     ngl::VAOPrimitives * prim = ngl::VAOPrimitives::instance();
 
